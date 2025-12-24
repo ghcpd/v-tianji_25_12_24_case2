@@ -1,0 +1,187 @@
+User: Prompt
+You are maintaining an existing frontend Todo application that is functional but evolving organically as contributors add features over time.
+
+Please review the current state of the project and outline a plan that helps guide and coordinate future development.
+
+Title:
+Frontend Todo Application – Roadmap & Milestone Planning Capability Evaluation
+
+Description:
+This task evaluates the model’s ability to collaboratively plan, structure, and communicate future work for an evolving frontend Todo application. The focus is on whether the model can organize upcoming efforts into clear phases or milestones that align contributors around shared priorities, sequencing, and goals.
+
+GitHub Copilot: Status: I'll scan the most important project files to understand current architecture, dependencies, state management and hooks — then I'll produce a phased roadmap with milestones, risks, and recommended next tasks. I'll read package.json, README, App entry, the todo store, and the todos hook in parallel.
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/package.json)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/README.md)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/App.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/store/todoStore.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/hooks/useTodos.ts)
+
+Quick follow-up: next I'll read the UI components, shared types, and storage/API stubs to verify coupling and integration points. I'll fetch `TodoList.tsx`, `TodoItem.tsx`, `types/index.ts`, `services/api.ts`, and `lib/storage.ts` in parallel.
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/components/TodoList.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/components/TodoItem.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/types/index.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/services/api.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/lib/storage.ts)
+
+GitHub Copilot — summary of findings and a practical, phased roadmap to align contributors and get this Todo app into a maintainable, scalable state.
+
+## Quick findings (high‑value) ✅
+- The app is functional but architecturally inconsistent: state lives in App.tsx while useTodos.ts, todoStore.ts, storage.ts and api.ts are partially implemented or unused.  
+- Types are duplicated across files (index.ts exists but components still declare local `Todo` interfaces). This increases drift and bugs.  
+- UX/code smells: mixed component paradigms (class + hooks), unused utilities, no CI/tests, and API/storage abstractions are only stubs — good opportunity for an incremental refactor.
+
+---
+
+## Goal (single sentence) 🎯
+Move from a working-but-fragile codebase to a predictable, testable, contributor-friendly codebase through small, verifiable milestones that improve architecture, DX, and deliver user-facing features.
+
+---
+
+## High-level strategy (incremental + low-risk) 💡
+1. Stabilize & standardize (types, state, storage) — small PRs, high value.  
+2. Add tests, CI and developer tooling to prevent regressions.  
+3. Implement API & collaboration features behind feature flags/opt-in.  
+4. Iterate on UX (sorting, priority, tags, accessibility, mobile/PWA).  
+5. Scale: real-time collaboration, integrations, analytics.
+
+---
+
+## Recommended tech decisions (proposals)
+- State management: start with React Context + `useReducer` (migrate App.tsx → `TodoProvider`) or adopt **Zustand** if global store is preferred. (Context first = minimal dependency risk.)  
+- Types: enforce a single source — use index.ts everywhere. Enable `tsconfig` strictness gradually.  
+- Storage/API: use `StorageService` abstraction for local persistence; implement `ApiService` for server sync later (feature-flagged).  
+- Components: standardize on functional components + hooks; convert isolated class components (e.g., `TodoItem`) incrementally.  
+- Testing & CI: Vitest + React Testing Library for unit; Playwright for one critical E2E; GitHub Actions for CI.  
+- Linting/formatting: ESLint + Prettier + Husky pre-commit.
+
+---
+
+## 6‑milestone roadmap (prioritized, with acceptance criteria & rough estimates)
+
+1) Milestone 0 — "Safety & Contributor Onboarding" (1 week) 🔧
+   - Deliverables: CI + basic tests + PR template + CONTRIBUTING.md.
+   - Files touched: add `.github/workflows/ci.yml`, `vitest` config, `tests/*`.
+   - Acceptance: `npm run test` passes on CI; new PR template enforces checklist.
+   - Risk: low. Value: high (prevents regressions).
+
+2) Milestone 1 — "Type & API Surface Consolidation" (1 week) ✅
+   - Deliverables: consolidate `Todo`/`Filter` usage to index.ts; enable TS strictness (or subset).
+   - Acceptance: no duplicated `Todo` interfaces; type errors fixed; build passes.
+   - Value: reduces bugs, eases refactor.
+
+3) Milestone 2 — "State Stabilization (non-breaking migration)" (1–2 weeks) ⚙️
+   - Deliverables: implement `TodoProvider` using `useTodos` (or `useReducer`), migrate App.tsx to consume provider; replace direct `localStorage` with `StorageService`.
+   - Acceptance: behavior identical to current app; migration done via feature-flagged/behind-branch; unit tests for hook and provider.
+   - Risk: medium (must preserve UX). Mitigation: small PRs + test coverage.
+
+4) Milestone 3 — "Developer Experience & Quality" (1 week)
+   - Deliverables: ESLint+Prettier rules, Husky pre-commit, baseline performance and accessibility audit (Lighthouse).
+   - Acceptance: lint checks on CI; auto-formatting in pre-commit; A11y score baseline documented.
+
+5) Milestone 4 — "Core feature set & UX improvements" (2–3 weeks)
+   - Deliverables: sorting, priorities UI, empty/state UX, accessible keyboard interactions, responsive layout, tags/due-dates design doc.
+   - Acceptance: documented UX specs + tests + manual QA checklist passed.
+
+6) Milestone 5 — "Backend sync & collaboration (phase 1)" (3–4 weeks)
+   - Deliverables: implement `ApiService` (REST), sync with server (offline-first with local fallback), basic team-assignment UI (`TeamMember` exists under `features/collaboration`).
+   - Acceptance: local-first behavior, optional remote sync toggle, end-to-end test for sync and conflict resolution.
+   - Risk: high — recommend feature-flagged rollout.
+
+---
+
+## Minimal incremental migration plan (first 2 weeks — exact next steps) 🛠️
+1. Create branch: `chore/infra-ci-and-tests`  
+   - Add Vitest + RTL, add 1 smoke test for `App` (adds snapshot/DOM assertions). Estimated: 1 day.
+2. Create branch: `chore/consolidate-types`  
+   - Replace local `Todo` declarations with index.ts. Add a lint rule to forbid duplicate type declarations. Estimated: 1–2 days.
+3. Create branch: `refactor/todo-provider` (small, reversible)  
+   - Implement `TodoProvider` using `useTodos` and `StorageService`. Migrate App.tsx to consume provider (no UI change). Add unit tests for `useTodos`. Estimated: 2–4 days.
+4. Merge in small PRs (< 300 LOC), one concern per PR, include test and changelog entry.
+
+Suggested immediate issue titles (ready-to-assign)
+- "CI: add Vitest + basic App smoke test"
+- "Refactor: consolidate Todo type to index.ts"
+- "Refactor: migrate App state to `TodoProvider` using `useTodos`"
+- "DX: add ESLint + Prettier + Husky"
+
+Suggested branch naming, PR size: one concern per branch/PR; keep PRs < 400 LOC.
+
+---
+
+## Example acceptance criteria (use in issue templates) 📋
+- Behavior: existing user flows (add, toggle, delete, filter) unchanged.
+- Tests: unit tests covering add/toggle/delete + 1 E2E that covers add → complete → delete.
+- Types: no `any` introduced; central `Todo` used.
+- CI: build and tests pass on push.
+
+---
+
+## PR checklist (copy into PR template) ✅
+- [ ] Linked issue / roadmap milestone
+- [ ] Unit tests added/updated
+- [ ] E2E or integration test (if behavior-critical)
+- [ ] Types added / no duplicated types
+- [ ] Accessibility considerations (aria, keyboard)
+- [ ] Performance: no regressions in Lighthouse quick check
+- [ ] Updated README or CHANGELOG if user-visible
+
+---
+
+## Metrics / signals to track success 📊
+- Developer: PR cycle time (goal < 24–48h for review), CI pass rate
+- Quality: test coverage on critical modules (target ≥ 80% for hooks/store)
+- Product: time-to-first-task (UX metric), error rate (console/runtime)
+- Adoption: contributor ramp-up time (docs + CONTRIBUTING)
+
+---
+
+## Risks & mitigations ⚠️
+- Large rewrite risk — mitigate with incremental migration and feature flags.
+- API design churn — start with a minimal REST surface and keep server contracts backwards-compatible.
+- Behavioral regressions — mitigate with E2E + snapshot + manual QA checklist.
+
+---
+
+## Concrete next actions I recommend you do now (ordered, measurable) ▶️
+1. Open a small PR: add Vitest + one smoke test for App.tsx (CI passes). — Impact: immediate safety.  
+2. Open a second PR: replace local `Todo` declarations with index.ts (tiny, reviewable). — Impact: prepares refactor.  
+3. After those land: implement `TodoProvider` using `useTodos` + `StorageService` and add unit tests for the hook.
+
+If you want, I can:
+- Draft the exact issue/PR descriptions and templates.  
+- Implement the first PR (add Vitest + a smoke test) and open the branch locally for you.
+
+---
+
+## Suggested backlog (short list — next 8 tickets)
+1. CI + Vitest smoke test (blocker)  
+2. Consolidate `Todo` type (blocker)  
+3. Migrate `App` → `TodoProvider` (architectural)  
+4. Convert `TodoItem` to functional component (consistency)  
+5. Implement `StorageService` usage throughout (persistence)  
+6. Add ESLint + Prettier + Husky (DX)  
+7. Add sorting & priority filter (feature)  
+8. Implement basic API sync stub + feature flag (integration)
+
+---
+
+## Final note — quick win recommendation ✨
+Merge CI + tests and type consolidation first (two small PRs). These two steps reduce risk dramatically and make all subsequent refactors safe and reviewable.
+
+---
+
+Would you like me to:
+- A) create the first PR (Vitest + one App smoke test), or  
+- B) scaffold the `TodoProvider` + migration PR with tests and a migration checklist?  
+
+Pick A or B and I will generate the branch/changes and the exact PR description.
