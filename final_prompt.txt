@@ -1,0 +1,10 @@
+Prompt
+You are maintaining an existing frontend Todo application that is functional but evolving organically as contributors add features over time.
+
+Please review the current state of the project and outline a plan that helps guide and coordinate future development.
+
+Title:
+Frontend Todo Application – Roadmap & Milestone Planning Capability Evaluation
+
+Description:
+This task evaluates the model’s ability to collaboratively plan, structure, and communicate future work for an evolving frontend Todo application. The focus is on whether the model can organize upcoming efforts into clear phases or milestones that align contributors around shared priorities, sequencing, and goals.
