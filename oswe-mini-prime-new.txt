@@ -1,0 +1,164 @@
+User: Prompt
+You are maintaining an existing frontend Todo application that is functional but evolving organically as contributors add features over time.
+
+Please review the current state of the project and outline a plan that helps guide and coordinate future development.
+
+Title:
+Frontend Todo Application – Roadmap & Milestone Planning Capability Evaluation
+
+Description:
+This task evaluates the model’s ability to collaboratively plan, structure, and communicate future work for an evolving frontend Todo application. The focus is on whether the model can organize upcoming efforts into clear phases or milestones that align contributors around shared priorities, sequencing, and goals.
+
+GitHub Copilot: Proceeding to scan key project files (README, package.json, and core components) to gather context.
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/README.md)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/package.json)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/App.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/main.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/store/todoStore.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/hooks/useTodos.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/components/TodoList.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/components/TodoForm.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/components/TodoItem.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/utils/helpers.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/tests/setup.ts)
+
+My next step is to formalize a plan and milestones based on the scan; I'll create a structured todo list to track the work.
+
+Created 7 todos
+
+Nice! I found the main issues (inconsistent state, no CI, missing tests). My next step is to identify technical debt and key improvements and mark that todo in-progress.
+
+Starting: *Identify technical debt & improvement areas* (2/7)
+
+## Frontend Todo Application — Roadmap & Milestone Planning Evaluation ✅
+
+### Quick summary of current state 🚦
+- Tech: **React 18**, **TypeScript**, **Vite**. (See package.json, tsconfig.json, vite.config.ts.)
+- App behavior: small but functional; uses component local state + direct `localStorage` persistence (see App.tsx).
+- Architecture notes:
+  - Inconsistent patterns: mix of class components (`TodoItem`) and function components/hooks (`TodoForm`).
+  - Partial, unused state helpers: `useTodos`, `store/todoStore` (stub).
+  - Utilities present but not wired (sorting, debounce).
+  - No CI, no test runner configured, no linting/prettier, and TODOs in code indicate outstanding architectural decisions.
+- Immediate risks: accumulation of technical debt, poor contributor onboarding, fragile releases without CI/test guardrails.
+
+---
+
+## High-level phased roadmap (milestones + goals) 📅
+
+### Phase 0 — Foundation & Stabilize (1–2 weeks) 🔧
+Goal: Make contributions low risk and consistent.
+Key tasks:
+- Add CI (GitHub Actions) to run: install, build, lint, tests.
+- Add linting/formatting: **ESLint**, **Prettier**, set rules + pre-commit hooks (husky, lint-staged).
+- Establish test tooling: **Vitest** + React Testing Library; add basic unit tests.
+- Enforce TypeScript strictness and centralize types (index.ts) and use them.
+- Codify conventions: component patterns (functional/hooks), state approach decision doc.
+Success criteria:
+- CI passes on PRs, lint/prettier run automatically, TypeScript strict enabled.
+
+### Phase 1 — Core state & persistence (2–4 weeks) ⚙️
+Goal: Run business logic through a consistent state & persistence layer.
+Key tasks:
+- Choose & implement state approach: Context + custom hooks or a lightweight store (e.g., Zustand).
+- Create storage abstraction (wrap `localStorage` in `lib/storage.ts`) and tests; prepare `services/api.ts` to enable swap to real backend later.
+- Refactor `App` to use the chosen pattern (Hook + Provider), migrate components to use central store.
+Success criteria:
+- All core CRUD actions covered by unit tests; storage layer swappable; `App` no longer manipulates `localStorage` directly.
+
+### Phase 2 — UX, features & collaboration (2–6 sprints) 👥
+Goal: Add features that enable team workflows.
+Key tasks:
+- Implement task edit, due dates, priority setting, sorting and filtering using helpers.
+- Integrate collaboration model (TeamMember types exist in `features/collaboration`): task assignment UI, member list.
+- Improve empty states, error handling, ARIA/accessibility fixes.
+- Add E2E tests (Playwright or Cypress) covering collaboration flows.
+Success criteria:
+- Collaboration flows work end-to-end with E2E tests, accessibility score target reached.
+
+### Phase 3 — Quality, performance & release process (ongoing) ⚡
+Goal: Improve reliability and observability.
+Key tasks:
+- Add performance/lighthouse checks, deploy previews (Vercel/Netlify), and automated release workflow.
+- Add code owners, guardrails (test coverage thresholds, performance budgets).
+Success criteria:
+- Deploy previews for PRs; thresholds set in CI and enforced.
+
+### Phase 4 — Integrations & polish (later) 🔗
+Goal: External integrations and advanced features.
+Key tasks:
+- Integrations (calendar, Slack), analytics, notifications, recurring tasks, feature flags.
+Success criteria:
+- Integrations behind feature flags with tests and docs.
+
+---
+
+## Cross-cutting practices & governance 🧭
+- Documentation: `CONTRIBUTING.md`, `DEVELOPMENT.md`, architecture decision records (ADR).
+- Small PRs + PR template + review checklist (see sample below).
+- RFC process for large changes (state manager, API contract).
+- Milestones in repo for triaging work; weekly grooming & monthly milestone review meetings.
+
+---
+
+## Practical templates (short samples) ✂️
+
+Issue / Milestone template (fields)
+- Title: [Milestone] Short goal
+- Description: Problem statement, scope, out-of-scope, success criteria
+- Tasks: list actionable sub-tasks
+- Estimate: small / medium / large
+- Owner: person/team
+- Blockers/Dependencies
+
+PR Checklist (sample)
+- [ ] Changes covered by unit tests
+- [ ] Lint and formatting pass locally
+- [ ] All new components accessible (keyboard/ARIA)
+- [ ] Size and scope acceptable (<= 500 LOC)
+- [ ] Linked to milestone/issue
+
+---
+
+## Metrics to track progress 📊
+- CI pass rate per PR
+- PR lead time (open → merged)
+- Test coverage for core modules
+- Accessibility (Lighthouse)
+- Open issue backlog by priority
+
+---
+
+## Capability evaluation — can this project adopt the roadmap? ✅ / ⚠️
+Strengths:
+- Small, focused codebase — low friction for refactor and tests.
+- Modern stack (TypeScript + Vite + React), easy to add modern tools.
+
+Constraints / Risks:
+- Missing CI & tests today — must prioritize Phase 0 before big refactors.
+- Mixed component patterns and TODOs indicate likely merge conflicts if multiple contributors refactor without coordination.
+- No explicit ownership or contribution processes—add governance early.
+
+Recommendation: Start with **Phase 0 (foundation)**. That unlocks reliable, low-risk subsequent changes and improves collaboration velocity.
+
+---
+
+## Suggested next actions (pick one) ▶️
+1. Add CI + ESLint + Prettier + Vitest (I can open a PR with config and small tests). — *recommended first step*
+2. Draft ADR and a decision on state manager (Context + hooks vs Zustand). I'll prepare an RFC template and pros/cons.
+3. Create milestone & issue templates and a PR checklist in `.github/ISSUE_TEMPLATE` and `.github/PULL_REQUEST_TEMPLATE.md`.
+
+---
+
+Perfect! I reviewed the project and drafted the phased roadmap and concrete tasks. My next step is to create the chosen starter artifact (CI + lint + tests) and open a PR — which of the next actions above do you want me to start with?
