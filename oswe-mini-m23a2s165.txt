@@ -1,0 +1,152 @@
+User: Prompt
+You are maintaining an existing frontend Todo application that is functional but evolving organically as contributors add features over time.
+
+Please review the current state of the project and outline a plan that helps guide and coordinate future development.
+
+Title:
+Frontend Todo Application – Roadmap & Milestone Planning Capability Evaluation
+
+Description:
+This task evaluates the model’s ability to collaboratively plan, structure, and communicate future work for an evolving frontend Todo application. The focus is on whether the model can organize upcoming efforts into clear phases or milestones that align contributors around shared priorities, sequencing, and goals.
+
+GitHub Copilot: Status update: I'll read the project's key files (package.json, README, App, todo store, and hooks) to assess architecture, features, tests, and dependencies before producing the roadmap. I'll report findings and propose a milestone-based plan next.
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/package.json)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/README.md)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/App.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/store/todoStore.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/hooks/useTodos.ts)
+
+## Frontend Todo Application — Roadmap & Milestone Plan ✅
+
+Summary
+- Current state: small Vite + React TypeScript app (localStorage persistence, UI components present). Partial/duplicated state logic in App.tsx, an unused hook useTodos.ts, and an unfinished context in todoStore.ts. Tests and CI are minimal/absent.  
+- Goal: turn the app from a single-developer prototype into a maintainable, testable, team-friendly product with clear milestones, deliverables, and lightweight governance.
+
+---
+
+## Quick findings (from the workspace) 🔎
+- App uses local component state and direct localStorage in App.tsx.  
+- `useTodos` exists but is unused — opportunity for refactor.  
+- todoStore.ts scaffolds a Context but isn’t implemented.  
+- No test runner, linting, or CI configured in package.json (dev scripts are minimal).
+
+---
+
+## High-level roadmap (phased milestones)
+1. Foundation — Stabilize & standardize (1–2 weeks) ⚙️  
+   - Goals: consistent state pattern, tests, basic CI, developer docs.  
+   - Deliverables: PR-ready `TodoProvider` or `useTodos` integration, unit tests, ESLint/Prettier, GitHub Actions for build + tests, updated README.md.  
+   - Size: small → medium.
+
+2. Core feature set — Reliability & UX (2–4 weeks) ✨  
+   - Goals: robust persistence, filtering/sorting, priorities/tags, accessibility.  
+   - Deliverables: persistent store abstraction (localStorage adapter + API-ready interface), comprehensive unit + component tests, keyboard accessibility, responsive styles.  
+   - Size: medium.
+
+3. Collaboration & API integration (3–6 weeks) 🔗  
+   - Goals: multi-user support, backend API (or mock), real-time sync option (optional).  
+   - Deliverables: REST API client (api.ts), user/team model, optimistic UI updates, E2E tests, basic auth stub.  
+   - Size: large.
+
+4. Polish, observability & deployment (2–3 weeks) 🚀  
+   - Goals: CI/CD deployment, monitoring, performance, analytics.  
+   - Deliverables: production build pipeline, deploy preview, basic telemetry, performance budget, accessibility audit fixes.  
+   - Size: medium.
+
+5. Scale & extensibility (ongoing) 📈  
+   - Goals: plugins/integration, offline-first sync, role-based access.  
+   - Deliverables: PWA support, integrations (calendar, Slack), granular permissions.
+
+---
+
+## Milestone → Concrete tasks & acceptance criteria
+- Milestone 1 — Stabilize & Standards
+  - Tasks:
+    - Refactor App.tsx to use useTodos.ts OR implement `TodoProvider` in todoStore.ts and migrate components.  
+    - Add unit tests for `useTodos` and `TodoItem` components (Vitest + React Testing Library).  
+    - Add ESLint + Prettier + EditorConfig.  
+    - Add GitHub Actions: install → build → test on PRs.
+  - Acceptance criteria:
+    - All tests pass in CI, `npm run dev` runs, no console errors in major flows, README updated with contributor setup steps.
+
+- Milestone 2 — Core UX & Reliability
+  - Tasks:
+    - Implement storage abstraction (`localStorage` adapter + API adapter interface).  
+    - Add filters, sort, tags, priority UI and tests.  
+    - Accessibility pass (keyboard + aria).  
+  - Acceptance criteria:
+    - Storage can be switched to server without UI changes; accessibility score improved; >80% component test coverage.
+
+- Milestone 3 — Collaboration API
+  - Tasks:
+    - Design minimal API contract and implement api.ts.  
+    - Add user/team UI (`features/collaboration/*` already present).  
+    - Add E2E tests (Playwright/Cypress) for multi-user flows.
+  - Acceptance criteria:
+    - Tasks persist to API; multi-user flows verified in E2E tests.
+
+---
+
+## Technology / architecture recommendations 🔧
+- State: pick one — React Context + reducer or Zustand for simplicity; use Redux Toolkit only if complex state coordination is expected. Migrate `useTodos` into the chosen pattern and remove duplicate logic in App.tsx.  
+- Persistence: keep `localStorage` adapter for offline dev; design `storage` interface in storage.ts so switching to API is trivial.  
+- Testing: Vitest + React Testing Library for unit/components; Playwright for E2E.  
+- Linting/formatting: ESLint + Prettier + Husky pre-commit hooks.  
+- CI/CD: GitHub Actions — run install, build, tests, and optionally deploy preview.
+
+---
+
+## Recommended short-term backlog (prioritized)
+1. Refactor state into a single source (`useTodos` → provider or hook used by App.tsx) — high priority.  
+2. Add unit tests for core logic and components — high priority.  
+3. Add CI (build + tests) and developer setup in README.md — high priority.  
+4. Implement storage abstraction + migrate localStorage usage out of App.tsx — medium priority.  
+5. Add PR checklist, contribution guidelines, and issue templates — medium priority.
+
+---
+
+## Risks & mitigations
+- Risk: multiple state implementations create regressions. Mitigation: one PR to centralize state, then delete duplicates.  
+- Risk: missing tests slow changes. Mitigation: require tests for all new features; set minimum coverage gate in CI.  
+- Risk: scope creep for collaboration features. Mitigation: implement MVP API + optimistic UI first, expand iteratively.
+
+---
+
+## Definition of Done (PR checklist)
+- Code builds locally and in CI (`npm run build`) ✅  
+- Unit + component tests covering new behavior pass ✅  
+- Linting and formatting checks pass ✅  
+- README and CHANGELOG updated (if feature or fix) ✅  
+- Accessibility basics validated (keyboard focus, aria) ✅
+
+---
+
+## Example 8-week milestone plan (2-week sprints)
+- Sprint 1: Foundation (refactor state, unit tests, CI)  
+- Sprint 2: Core features (storage abstraction, filters, accessibility)  
+- Sprint 3: Collaboration MVP (API client, team UI, E2E tests)  
+- Sprint 4: Polish & deploy (PWA, analytics, performance)
+
+---
+
+## Success metrics (what to measure)
+- CI passing rate and PR lead time ✅  
+- Test coverage (target ≥ 80%) ✅  
+- Time to reproduce a bug (should decrease) ✅  
+- User flows completion rate (create, edit, assign) in E2E tests ✅
+
+---
+
+## Immediate next steps (3 action items) — do these first
+1. Create an issue + PR to centralize the todo state (migrate App.tsx → `useTodos` or `TodoProvider`).  
+2. Add Vitest + React Testing Library and write unit tests for `useTodos` and `TodoList`.  
+3. Add a GitHub Actions workflow that runs install → build → test on PRs.
+
+---
+
+> Note: I can create starter PR files (tests, CI workflow, or the `TodoProvider` refactor) if you want — tell me which item to implement first and I’ll make the changes.
