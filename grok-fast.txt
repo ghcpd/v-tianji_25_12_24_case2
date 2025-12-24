@@ -1,0 +1,200 @@
+User: Prompt
+You are maintaining an existing frontend Todo application that is functional but evolving organically as contributors add features over time.
+
+Please review the current state of the project and outline a plan that helps guide and coordinate future development.
+
+Title:
+Frontend Todo Application – Roadmap & Milestone Planning Capability Evaluation
+
+Description:
+This task evaluates the model’s ability to collaboratively plan, structure, and communicate future work for an evolving frontend Todo application. The focus is on whether the model can organize upcoming efforts into clear phases or milestones that align contributors around shared priorities, sequencing, and goals.
+
+GitHub Copilot: Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/package.json)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/README.md)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/App.tsx#1-1), lines 1 to 50
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/App.tsx#51-51), lines 51 to 89
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/types/index.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/store/todoStore.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/hooks/useTodos.ts#1-1), lines 1 to 50
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/features/collaboration/TeamMember.tsx)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/features/collaboration/types.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/services/api.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/tests/setup.ts)
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/src/components/TodoItem.tsx#1-1), lines 1 to 50
+
+Read [](file:///c%3A/Users/v-tianji/Desktop/ghcpd/v-tianji_25_12_24_case2/final_prompt.txt)
+
+Based on my review of the codebase, here's a comprehensive roadmap and milestone plan for the Frontend Todo Application. The project shows a functional core with basic CRUD operations, but has several architectural inconsistencies, partial implementations, and pending decisions that need structured resolution.
+
+## Current State Assessment
+
+**Strengths:**
+- Core functionality works (add, toggle, delete, filter todos)
+- TypeScript setup with proper tooling (Vite, React 18)
+- Modular component structure
+- Some forward-thinking stubs (collaboration, API services)
+
+**Critical Issues:**
+- Inconsistent state management (local component state vs. partial store implementations)
+- Duplicated type definitions across files
+- Mixed component patterns (class vs. functional components)
+- No testing framework or test coverage
+- Partial feature implementations creating technical debt
+- No backend integration despite API service stubs
+
+## Roadmap & Milestone Plan
+
+### **Phase 1: Foundation Consolidation (Weeks 1-3)**
+**Goal:** Establish consistent architecture and eliminate technical debt
+
+**Milestones:**
+1. **Type System Unification**
+   - Consolidate all Todo types into index.ts
+   - Remove duplicate interfaces from components
+   - Add comprehensive type definitions for all planned features
+
+2. **State Management Decision & Implementation**
+   - Evaluate: Context API vs. Zustand vs. Redux
+   - Implement chosen solution (recommend Zustand for simplicity)
+   - Migrate from local component state to centralized store
+   - Integrate existing `useTodos` hook or remove if redundant
+
+3. **Component Pattern Standardization**
+   - Convert all class components to functional components with hooks
+   - Establish consistent prop interfaces
+   - Implement error boundaries for better UX
+
+### **Phase 2: Quality Assurance & Testing (Weeks 4-6)**
+**Goal:** Ensure code reliability and maintainability
+
+**Milestones:**
+1. **Testing Framework Setup**
+   - Choose and configure Vitest + React Testing Library
+   - Set up test environment and utilities
+   - Add tests directory structure
+
+2. **Core Functionality Testing**
+   - Unit tests for all components
+   - Integration tests for todo operations
+   - Store/state management tests
+
+3. **Code Quality Tools**
+   - Add ESLint + Prettier configuration
+   - Implement pre-commit hooks
+   - Add basic CI/CD pipeline
+
+### **Phase 3: Feature Completion (Weeks 7-10)**
+**Goal:** Complete partially implemented features and enhance UX
+
+**Milestones:**
+1. **Enhanced Todo Features**
+   - Implement priority system (UI + functionality)
+   - Add due dates with date picker
+   - Implement categories/tags system
+   - Add search functionality
+
+2. **UI/UX Improvements**
+   - Responsive design enhancements
+   - Accessibility (ARIA labels, keyboard navigation)
+   - Loading states and error handling
+   - Dark mode support
+
+3. **Data Persistence Enhancements**
+   - Improve localStorage with better error handling
+   - Add data export/import functionality
+   - Implement data migration for schema changes
+
+### **Phase 4: Collaboration Features (Weeks 11-15)**
+**Goal:** Enable team-based task management
+
+**Milestones:**
+1. **Basic Team Management**
+   - User authentication system
+   - Team creation and member management
+   - Role-based permissions (owner, admin, member, viewer)
+
+2. **Shared Todo Functionality**
+   - Task assignment to team members
+   - Real-time updates (WebSocket or polling)
+   - Conflict resolution for concurrent edits
+
+3. **Communication Features**
+   - Comments on tasks
+   - Task history/audit log
+   - Notifications system
+
+### **Phase 5: Backend Integration (Weeks 16-20)**
+**Goal:** Enable multi-device synchronization and scalability
+
+**Milestones:**
+1. **API Design & Implementation**
+   - Design REST API or GraphQL schema
+   - Implement authentication endpoints
+   - Create CRUD endpoints for todos and teams
+
+2. **Frontend-Backend Integration**
+   - Replace localStorage with API calls
+   - Implement offline-first approach
+   - Add proper error handling and retry logic
+
+3. **Database & Deployment**
+   - Set up database schema
+   - Implement data synchronization
+   - Deploy backend service
+
+### **Phase 6: Advanced Features & Optimization (Weeks 21-25)**
+**Goal:** Enhance performance and user experience
+
+**Milestones:**
+1. **Performance Optimization**
+   - Implement virtualization for large todo lists
+   - Code splitting and lazy loading
+   - Bundle size optimization
+
+2. **PWA Capabilities**
+   - Service worker for offline functionality
+   - App manifest for installability
+   - Push notifications
+
+3. **Analytics & Monitoring**
+   - User behavior tracking
+   - Error monitoring and reporting
+   - Performance metrics
+
+## Success Metrics & Priorities
+
+**High Priority:**
+- Eliminate architectural inconsistencies
+- Implement comprehensive testing
+- Complete core feature implementations
+
+**Medium Priority:**
+- Collaboration features
+- Backend integration
+- Performance optimizations
+
+**Low Priority:**
+- Advanced PWA features
+- Analytics integration
+
+## Risk Mitigation
+
+- **Technical Debt:** Address inconsistencies early in Phase 1
+- **Scope Creep:** Use feature flags for experimental features
+- **Testing:** Implement TDD approach for new features
+- **Collaboration:** Regular code reviews and pair programming
+
+This roadmap provides a structured path forward while acknowledging the organic growth of the project. Each phase builds upon the previous one, ensuring stability before adding complexity.
